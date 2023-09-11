@@ -1,31 +1,19 @@
-# This is a basic workflow to help you get started with Actions
-
 name: CI
 
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
+    branches: ["official","main","dev" ]
     paths:
         - 'docs/**'
 
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "build"
   build:
-    # The type of runner that the job will run on
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
+    # 官网的 docs 目录发生变化时，给 docs-cn 仓库提交一个 issue
     steps:
-      # 官网的 docs 目录发生变化时，给 docs-cn 仓库提交一个 issue
-      - uses: actions/github-script@v6
       - name: repo docs changed
-        id: pr-info
+        uses: actions/github-script@v6
         with:
             github-token: ${{ secrets.SYNC_DOCS }}
             script: |

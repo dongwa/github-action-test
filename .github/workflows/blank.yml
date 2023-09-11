@@ -15,16 +15,15 @@ jobs:
       - name: repo docs changed
         uses: actions/github-script@v6
         with:
-            github-token: ${{ secrets.SYNC_DOCS }}
-            script: |
-              const sourceRepo = 'https://github.com/quasarframework/quasar';
-              const pushLink="${sourceRepo}/commit/${github.sha}";
-              console.log('pushLink',pushLink);
-              const targetRepo = 'quasar-docs-cn';
-              const res = await github.rest.issues.create({
-                owner: context.repo.owner,
-                repo: targetRepo,
-                title: `官方文档提交了一个新的变更，请处理 ${pushLink}`,
-                body: `commit url: ${pushLink}`
-              });
-              console.log(res)
+          script: |
+            const sourceRepo = 'https://github.com/quasarframework/quasar';
+            const pushLink="${sourceRepo}/commit/${github.sha}";
+            console.log('pushLink',pushLink);
+            const targetRepo = 'quasar-docs-cn';
+            const res = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: targetRepo,
+              title: `官方文档提交了一个新的变更，请处理 ${pushLink}`,
+              body: `commit url: ${pushLink}`
+            });
+            console.log(res)

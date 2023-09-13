@@ -1,10 +1,9 @@
-name: CI
+name: check-docs-change
 
 on:
-  push:
-    branches: ["official","main","dev" ]
-    paths:
-        - 'docs/**'
+  schedule:
+    - cron: '30 23 * * *' # 每天夜里11点半运行
+  workflow_dispatch: # 添加这个触发器，用于手动触发工作流程
 
 jobs:
   build:
@@ -15,14 +14,17 @@ jobs:
       - name: repo docs changed
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.SYNC_DOCS }}
           script: |
-            const sourceRepo = context.repo.repo;
-            const pushLink = `${sourceRepo}/commit/${context.sha}`;
-            const targetRepo = 'quasar-docs-cn';
-            const res = await github.rest.issues.create({
+            const targetRepo = 'quasarframework/quasar';
+
+            const twoDaysAgo = new Date();
+            twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+
+            const { data } = await rest.repos.listCommits({
               owner: context.repo.owner,
               repo: targetRepo,
-              title: `官方文档提交了一个新的变更，请处理 ${pushLink}`,
-              body: `commit url: ${pushLink}`
+              since: twoDaysAgo.toISOString(),
             });
+          
+            console.log('res',data)
+

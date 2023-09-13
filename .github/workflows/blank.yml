@@ -15,14 +15,12 @@ jobs:
         uses: actions/github-script@v6
         with:
           script: |
-            const targetRepo = 'quasarframework/quasar';
-
             const twoDaysAgo = new Date();
             twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
 
             const { data } = await github.rest.repos.listCommits({
-              owner: context.repo.owner,
-              repo: targetRepo,
+              owner: 'quasarframework',
+              repo: 'quasar',
               since: twoDaysAgo.toISOString(),
             });
           

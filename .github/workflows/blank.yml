@@ -25,5 +25,13 @@ jobs:
               since: twoDaysAgo.toISOString(),
             });
           
-            console.log('res',data)
-
+            const commits = data.reduce((res,item)=>{
+              return res += item.html_url + '\n'
+            },'')
+            
+            const res = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `官方文档发生了一些新的变更，请处理`,
+              body: `相关commits:\n ${commits}`
+            });

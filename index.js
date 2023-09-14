@@ -10,11 +10,16 @@ const docsChanges = pushes.filter(push => {
   return push.files.some(file => file.startsWith('docs/'));
 });
 
+const commits = [].reduce((res,item)=>{
+  return res += item.html_url + '\n'
+},'')
+
+
 console.log(docsChanges)
 
 const res = await github.rest.issues.create({
   owner: context.repo.owner,
   repo: context.repo.repo,
-  title: `官方文档提交了一个新的变更，请处理 ${pushLink}`,
-  body: `commit url: ${pushLink}`
+  title: `官方文档发生了一些新的变更，请处理`,
+  body: `相关commits:\n ${commits}`
 });

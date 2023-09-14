@@ -16,11 +16,12 @@ jobs:
         with:
           script: |
             const twoDaysAgo = new Date();
-            twoDaysAgo.setDate(twoDaysAgo.getDate() - 2);
+            twoDaysAgo.setDate(twoDaysAgo.getDate() - 20);
 
             const { data } = await github.rest.repos.listCommits({
               owner: 'quasarframework',
               repo: 'quasar',
+              path:'/docs',
               since: twoDaysAgo.toISOString(),
             });
           
